@@ -5,7 +5,8 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 Examples:
 Function views
     1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
+    2. Add a URL to url
+    .........patterns:  url(r'^$', views.home, name='home')
 Class-based views
     1. Add an import:  from other_app.views import Home
     2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
@@ -19,4 +20,5 @@ from lists import views
 urlpatterns = [
     url(r'^$', views.home_page, name='home'),
     url(r'^lists/the-only-list-in-the-world/$', views.view_list, name='view_list'),
+    url(r'^lists/new$', views.new_list, name='new_list'),
 ]
