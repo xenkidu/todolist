@@ -4,13 +4,18 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.chrome.options import Options
+
 
 MAX_WAIT = 10
 
 class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
-        self.browser = webdriver.Chrome()
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--window-size=1920x1080")
+        self.browser = webdriver.Chrome(chrome_options=options)
 
     def tearDown(self):
         self.browser.quit()
@@ -29,7 +34,7 @@ class NewVisitorTest(LiveServerTestCase):
                 time.sleep(0.1)
 
 
-    def test_can_start_a_list_and_retrieve_it_later(self):
+    def test_can_start_a_list_for_one_user(self):
         #   edith wants to check out cool website
         self.browser.get(self.live_server_url)
 
@@ -87,14 +92,13 @@ class NewVisitorTest(LiveServerTestCase):
         # she notices that her list has a unique URL
         edith_list_url = self.browser.current_url
         self.assertRegex(edith_list_url, '/lists/.+')
-        self.fail('Finish the test!')
 
         # Now a new user, Francis, comes along to the site.
 
         ## We use a new browser session to make sure that no information
         ## of Edith's is coming through from cookies etc
-        self.browser.quit()
-        self.browser = webdriver.Chrome()
+        self.tearDown()
+        self.setUp()
 
         # Francis visits the home page.  There is no sign of Edith's
         # list
@@ -120,3 +124,4 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('Buy milk', page_text)
 
         # Satisfied, they both go back to sleep
+        self.fail('Finish the test!')
