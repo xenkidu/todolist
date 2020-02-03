@@ -1,24 +1,25 @@
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 
 
 MAX_WAIT = 10
 
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         options = Options()
-        options.add_argument("--headless")
-        options.add_argument("--window-size=1920x1080")
-        self.browser = webdriver.Chrome(chrome_options=options)
+        options.headless = True
+
+        self.browser = webdriver.Firefox(options=options)
 
     def tearDown(self):
+        self.browser.refresh()
         self.browser.quit()
 
     def wait_for_row_in_list_table(self, row_text):
